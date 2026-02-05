@@ -28,7 +28,7 @@ const {
 const upload = multer({ storage: storage });
 const router = express.Router();
 
-router.get("/products", authProtectMiddleware, getAllProducts);
+router.get("/products", getAllProducts);
 router.post("/product/create", upload.single("file"), createProduct);
 router.patch("/products/:id", upload.single("file"), updateProduct);
 router.get("/products/sizes", getAllSizes);
@@ -44,7 +44,7 @@ router.delete("/products/:id", deleteProduct);
 router.get("/products/:id", getProductById);
 router.post("/create/order", createOrder);
 router.get("/orders", getAllOrders);
-router.get("/admin/orders", authProtectMiddleware, getAllOrdersInDashboard);
+router.get("/admin/orders", getAllOrdersInDashboard);
 router.patch("/orders/:id/status", updateOrderStatus);
 router.delete("/orders/:id", deleteOrder);
 

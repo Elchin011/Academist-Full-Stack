@@ -162,7 +162,7 @@ const CoursesList = () => {
               className="bg-red-500 text-[14px] text-white p-1.5 px-2.5 rounded-md hover:bg-red-600 hover:text-white duration-300"
               variant="outline"
               onClick={() => {
-                if (confirm("Are you sure you want to delete this service level?")) {
+                if (confirm("Are you sure you want to delete this course?")) {
                   deleteServiceLevels(item?._id);
                 }
               }}

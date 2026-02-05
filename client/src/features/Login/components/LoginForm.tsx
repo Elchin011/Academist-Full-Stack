@@ -31,11 +31,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     onSubmit: () => {
       mutate(formik.values, {
         onSuccess: (data) => {
-          setCookie("token", data.token, {
-            maxAge: 60 * 60 * 24 * 7,
-          });
           console.log(data);
           localStorage.setItem("user", JSON.stringify(data.user));
+
+          localStorage.setItem("token", data.token);
           formik.resetForm();
           onLoginSuccess(data.user);
         },

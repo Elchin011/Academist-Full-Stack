@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 
-router.get("/", authProtectMiddleware, getAllCourses);
+router.get("/", getAllCourses);
 router.post("/create", upload.single("file"), createCourses);
 router.patch("/:id", upload.single("file"), updateCourses);
 router.delete("/:id", deleteCourses);

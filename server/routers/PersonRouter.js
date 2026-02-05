@@ -15,7 +15,7 @@ router.delete("/specialties/:id", deletePersonSpecialty);
 
 
 
-router.get("/", authProtectMiddleware, getAllPerson);
+router.get("/", getAllPerson);
 router.post("/create", upload.single("file"), createPerson);
 router.delete("/:id", deletePerson);
 router.patch("/:id", upload.single("file"), updatePerson);

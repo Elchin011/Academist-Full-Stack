@@ -5,25 +5,25 @@ const api = axios.create({
     timeout: 10000,
 })
 
-if (typeof window !== "undefined") {
-    const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="));
+// if (typeof window !== "undefined") {
+//     const token = document.cookie
+//         .split("; ")
+//         .find((row) => row.startsWith("token="));
 
-    console.log("Token from cookie (client only):", token);
+//     console.log("Token from cookie (client only):", token);
 
-    api.interceptors.request.use(
-        (config) => {
-            if (token) {
-                config.headers["Authorization"] = `Bearer ${token.split("=")[1]}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        }
-    );
-}
+//     api.interceptors.request.use(
+//         (config) => {
+//             if (token) {
+//                 config.headers["Authorization"] = `Bearer ${token.split("=")[1]}`;
+//             }
+//             return config;
+//         },
+//         (error) => {
+//             return Promise.reject(error);
+//         }
+//     );
+// }
 
 
 

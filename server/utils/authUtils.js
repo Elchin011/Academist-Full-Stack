@@ -1,20 +1,18 @@
+const jwt = require("jsonwebtoken");
+
 const getUserFromToken = (token) => {
   if (!token) return null;
+
   try {
-    const payload = JSON.parse(
-      Buffer.from(token.split(".")[1], "base64").toString()
-    );
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return {
-      id: payload.id, // <- _id yox, id
-      email: payload.email,
-      roles: payload.roles || [],
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role,
     };
   } catch (error) {
-    console.error("Error decoding token:", error);
     return null;
   }
 };
 
-module.exports = {
-  getUserFromToken,
-};
+module.exports = { getUserFromToken };

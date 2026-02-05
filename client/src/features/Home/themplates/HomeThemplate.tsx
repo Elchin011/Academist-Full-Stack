@@ -1,6 +1,6 @@
 import React from 'react'
 import HeroBannerSlider from '../components/HeroBannerSlider'
-import BlueLight from '../components/BlueLight'
+import BlueLight from '../components/Beccome'
 import OnlineShop from '../components/OnlineShop'
 import Quality from '../components/Quality'
 import Book from '../components/Book'

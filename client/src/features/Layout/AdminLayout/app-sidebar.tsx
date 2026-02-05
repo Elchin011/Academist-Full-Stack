@@ -1,4 +1,4 @@
-import {Calendar, CircleQuestionMark,  FileText, FileUser,Layers,ListTree,Package,Palette, Ruler, Settings, ShoppingCart, SlidersHorizontal, Stethoscope, TicketPercent } from "lucide-react"
+import {Calendar, CircleQuestionMark,  FileText, FileUser,Layers,ListTree,LogOut,Package,Palette, Ruler, Settings, ShoppingCart, SlidersHorizontal, Stethoscope, TicketPercent } from "lucide-react"
 
 import {
     Sidebar,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sidebar"
 import { title } from "process"
 import { url } from "inspector"
+import Link from "next/link"
 
 const items = [
     {
@@ -67,7 +68,14 @@ export function AppSidebar() {
         <Sidebar>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel><Settings size={24} strokeWidth={3} className="mr-1" />Admin Dashboard</SidebarGroupLabel>
+                    <SidebarGroupLabel className="w-[70px] p-3 transition hover:bg-white hover:text-[#ff1949] border-[1px] hover:border-[#ff1949]">
+                        <Link href="/">
+                        <button className="flex items-center gap-1 text-[12px]"> Back <LogOut size={14} /> </button>
+                        </Link>
+                    </SidebarGroupLabel>
+                    <SidebarGroupLabel className="pl-5">
+                        Admin Dashboard
+                    </SidebarGroupLabel>
                     <SidebarGroupContent className="">
                         <SidebarMenu className="mt-2">
                             {items.map((item) => (

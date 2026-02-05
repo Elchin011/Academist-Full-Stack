@@ -10,7 +10,7 @@ const { storage } = require("../lib/cloudinaryConfig");
 const upload = multer({storage: storage}); 
 const router = express.Router();
 
-router.get("/", authProtectMiddleware, getAllQuestions);
+router.get("/", getAllQuestions);
 router.post("/create", upload.none(), createQuestion); 
 router.delete("/:id", deleteQuestion);
 

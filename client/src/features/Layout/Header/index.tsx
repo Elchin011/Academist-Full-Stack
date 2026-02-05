@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/Providers/CartProvider";
-import { ChevronUp, Clock, Facebook, Heart, Instagram, LocationEdit, LogOutIcon, Mail, MapPin, Menu, Phone, ShoppingBag, Smartphone, Twitch, Twitter, UserRound } from "lucide-react";
+import { ChevronUp, Clock, Facebook, Heart, Instagram, LocationEdit, LogIn, LogOutIcon, Mail, MapPin, Menu, Phone, ShoppingBag, Smartphone, Twitch, Twitter, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
@@ -157,52 +157,8 @@ export const Header = () => {
                     className="text-[#1c1c1c] text-[17px] font-semibold  cursor-pointer"
                   >
                     Home
-                    <span className="absolute left-0 -bottom-1.5 w-0 h-[1px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
                   </Link>
-                  <div className="absolute -left-6 top-full hidden group-hover:block bg-white mt-1 z-10 whitespace-nowrap">
-                    <ul className="pt-10 pl-7 pr-15 pb-7 space-y-2">
-                      <li>
-                        <Link
-                          href="/home"
-                          className="inline-flex text-[#1c1c1c] text-[14px] font-medium tracking-[0.1rem]"
-                        >
-                          Main Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/home2"
-                          className="inline-flex text-[#1c1c1c] text-[14px] font-medium tracking-[0.1rem]"
-                        >
-                          Optician Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/home2"
-                          className="inline-flex text-[#1c1c1c] text-[14px] font-medium tracking-[0.1rem]"
-                        >
-                          Ophthalmology Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/home2"
-                          className="inline-flex text-[#1c1c1c] text-[14px] font-medium tracking-[0.1rem]"
-                        >
-                          Shop Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/home2"
-                          className="inline-flex text-[#1c1c1c] text-[14px] font-medium tracking-[0.1rem]"
-                        >
-                          Eyewear Home
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
                 </li>
                 <li className="relative group mx-3">
                   <Link
@@ -317,9 +273,14 @@ export const Header = () => {
                     <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                 </li>
-                <li><Link href="/shops" className="text-[#1c1c1c] text-[14px] font-semibold tracking-[0.1rem] relative group cursor-pointer mx-3">SHOP
-                  <span className="absolute left-0 -bottom-1.5 w-0 h-[1px] bg-black transition-all duration-300 group-hover:w-full"></span>
-                </Link>
+                <li className="relative group mx-3">
+                  <Link
+                    href="/shops"
+                    className="text-[#1c1c1c] text-[17px] font-semibold  cursor-pointer"
+                  >
+                    Shop
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
                 </li>
                 <li className="relative group mx-3">
                   <Link
@@ -379,21 +340,27 @@ export const Header = () => {
                       )}
 
                     </div>
-                    <Link href="/cart">
-                      <div className="relative">
-                        <ShoppingBag strokeWidth={1.5} size={20} />
+                    {user?.role === "admin" ? (
+                      <Link
+                        href="/admin"
+                        className="text-white text-[14px] flex items-center  gap-1 hover:bg-white hover:text-[#ff1949] border-[1px] hover:border-[#ff1949] transition p-1.5 bg-[#ff1949] font-semibold relative group cursor-pointer mx-3"
+                      >
+                        Dashboard
+                        <LogIn size={14} />
+                      </Link>
+                    ) : (
+                      <Link href="/cart" className="relative">
+                        <ShoppingBag strokeWidth={1.5} size={18} />
                         {cartCount > 0 && (
-                          <div className="absolute -bottom-1 text-[9px] -right-1.5 bg-red-600 text-white rounded-full px-1">
+                          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                             {cartCount}
-                          </div>
+                          </span>
                         )}
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="hidden lg:flex items-center gap-2">
-                    <UserMenuNoSSr user={user} />
-                  </div>
-                  <div>
+                      </Link>
+                    )}
+                    <div className="hidden lg:flex items-center gap-2">
+                      <UserMenuNoSSr user={user} />
+                    </div>
                   </div>
                 </div>
               </ul>
@@ -461,7 +428,7 @@ export const Header = () => {
         {isVisible && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-[11px] bg-black text-white shadow-lg hover:bg-gray-800 transition"
+            className="fixed bottom-6 right-6 z-50 p-[11px] bg-[#ff1949] border border-[#ff1949] text-white shadow-lg hover:bg-white hover:text-[#ff1949] transition"
             aria-label="Scroll to top"
           >
             <ChevronUp size={18} />

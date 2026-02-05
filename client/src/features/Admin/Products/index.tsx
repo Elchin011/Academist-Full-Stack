@@ -205,7 +205,14 @@ const ProductList = () => {
   return (
     <div>
       <div className="flex items-center my-5 justify-between">
-        <h1 className="text-3xl font-bold text-gray-800">Products Lists</h1>
+        <div className='relative'>
+          <h1 className='text-3xl font-bold text-gray-800'>
+            Products Lists
+          </h1>
+          <span className='h-[2px] w-full bg-red-500 absolute bottom-0.5'>
+
+          </span>
+        </div>
         <Button
           className="bg-green-500 text-[14px] text-white px-4 py-2 rounded-md hover:bg-green-600 hover:text-white duration-300"
           onClick={() => {

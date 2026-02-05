@@ -1,17 +1,17 @@
-const monngoose=require("mongoose")
+const mongoose = require("mongoose");
 
 function ConnectDb() {
-  const dbUrl = process.env.MONGO_URI
+  const dbUrl = process.env.MONGO_URI;
 
-  monngoose.connect(dbUrl, {
-  })
-  .then(() => {
-    console.log("Database connected successfully");
-  })
-  .catch((error) => {
-    console.error("Database connection error:", error);
-    monngoose.disconnect()
-    process.exit(1); // Exit the process with failure
-  });
+  return mongoose
+    .connect(dbUrl)
+    .then(() => {
+      console.log("Database connected successfully");
+    })
+    .catch((err) => {
+      console.error("Database connection error:", err);
+      process.exit(1);
+    });
 }
+
 module.exports = ConnectDb;

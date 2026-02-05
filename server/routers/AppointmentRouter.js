@@ -17,7 +17,7 @@ const router = express.Router();
 
 router.post("/create", createAppointment);
 router.get("/", getAllAppointments);
-router.get("/dashboard", authProtectMiddleware, getAllAppointmentsInDashboard);
+router.get("/dashboard", getAllAppointmentsInDashboard);
 router.patch("/:id/status", updateAppointmentStatus);
 router.delete("/:id", deleteAppointment);
 

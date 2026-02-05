@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../lib/cloudinaryConfig");
+const path = require("path");
 
 function uploadMiddleware(folderName) {
   const storage = new CloudinaryStorage({
