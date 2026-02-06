@@ -1,7 +1,7 @@
 import React from 'react'
 import HeroBannerSlider from '../components/HeroBannerSlider'
 import BlueLight from '../components/Beccome'
-import OnlineShop from '../components/OnlineShop'
+
 import Quality from '../components/Quality'
 import Book from '../components/Book'
 import Appointment from '../components/Appointment'
@@ -9,6 +9,7 @@ import Autumn from '../components/Autumn'
 import Latest from '../components/Latest'
 import Visit from '../components/Visit'
 import CoursesList from '../components/Courses'
+import MeetProfessionals from '../components/MeetProfessionals'
 
 
 const HomeThemplate = () => {
@@ -17,7 +18,7 @@ const HomeThemplate = () => {
       <HeroBannerSlider/>
       <CoursesList/>
       <BlueLight/>
-      <OnlineShop/>
+      <MeetProfessionals/>
       <Quality/>
       <Book/>
       <Appointment/>

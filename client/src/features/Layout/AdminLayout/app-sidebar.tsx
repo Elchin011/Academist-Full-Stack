@@ -1,4 +1,4 @@
-import {Calendar, CircleQuestionMark,  FileText, FileUser,Layers,ListTree,LogOut,Package,Palette, Ruler, Settings, ShoppingCart, SlidersHorizontal, Stethoscope, TicketPercent } from "lucide-react"
+import {Calendar, CircleQuestionMark,  FileText, FileUser,IdCardLanyard,Layers,ListTree,LogOut,Package,Palette, Ruler, Settings, ShoppingCart, SlidersHorizontal, Stethoscope, TicketPercent } from "lucide-react"
 
 import {
     Sidebar,
@@ -28,12 +28,7 @@ const items = [
     {
         title: "Personals",
         url: "/admin/personals",
-        icon: FileUser,
-    },
-    {
-        title: "Personal Specialties",
-        url: "/admin/personal-specialties",
-        icon: Stethoscope,
+        icon: IdCardLanyard ,
     },
     {
         title: "Blog",
