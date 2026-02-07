@@ -97,7 +97,12 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  const cartCount = getCartItems().length;
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    setCartCount(getCartItems().length);
+  }, [cart]); 
+
 
 
   return (
@@ -351,12 +356,13 @@ export const Header = () => {
                     ) : (
                       <Link href="/cart" className="relative">
                         <ShoppingBag strokeWidth={1.5} size={18} />
-                        {cartCount > 0 && (
+                        {typeof window !== "undefined" && cartCount > 0 && (
                           <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
                             {cartCount}
                           </span>
                         )}
                       </Link>
+
                     )}
                     <div className="hidden lg:flex items-center gap-2">
                       <UserMenuNoSSr user={user} />
@@ -389,14 +395,14 @@ export const Header = () => {
                       <div className="max-w-md mx-auto mt-10 p-4">
                         <div className="flex border-b mb-4">
                           <button
-                            className={`w-1/2 py-2 font-semibold ${activeTab === "tab1" ? "border-b-2 border-black text-black" : "text-gray-500"
+                            className={`w-1/2 py-2 font-semibold ${activeTab === "tab1" ? "border-b-2 border-[#ff1949] text-[#ff1949]" : "text-gray-500"
                               }`}
                             onClick={() => setActiveTab("tab1")}
                           >
                             Login
                           </button>
                           <button
-                            className={`w-1/2 py-2 font-semibold ${activeTab === "tab2" ? "border-b-2 border-black text-black" : "text-gray-500"
+                            className={`w-1/2 py-2 font-semibold ${activeTab === "tab2" ? "border-b-2 border-[#ff1949] text-[#ff1949]" : "text-gray-500"
                               }`}
                             onClick={() => setActiveTab("tab2")}
                           >
@@ -428,7 +434,7 @@ export const Header = () => {
         {isVisible && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-[11px] bg-[#ff1949] border border-[#ff1949] text-white shadow-lg hover:bg-white hover:text-[#ff1949] transition"
+            className="fixed bottom-6 right-6 z-50 p-[11px] bg-[#ff1949] border border-[#ff1949] text-white shadow-lg hover:bg-transparent hover:text-[#ff1949] transition"
             aria-label="Scroll to top"
           >
             <ChevronUp size={18} />

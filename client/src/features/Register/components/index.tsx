@@ -112,7 +112,7 @@ const RegisterForm = ({ onRegisterSuccess }: { onRegisterSuccess: () => void }) 
 
                     <div className="flex items-center justify-center mt-4">
                         <button type="submit"
-                            className=" outline-none flex justify-center py-4 px-16 border border-transparent tracking-[0.15rem] text-[13px] font-medium text-white bg-black hover:bg-black focus:outline-none focus:ring-offset-2 focus:ring-0">
+                            className=" outline-none flex justify-center py-4 px-16 border border-transparent tracking-[0.15rem] text-[13px] font-medium text-white hover:text-[#ff1949] bg-[#ff1949] hover:bg-white hover:border-[#ff1949] focus:outline-none focus:ring-offset-2 focus:ring-0">
                             {
                                 isPending ? "Loading..." : "REGISTER"
                             }

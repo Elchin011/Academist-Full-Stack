@@ -10,11 +10,6 @@ import { PricingCard } from '@/features/PricingPlans/common/PricingCard';
 
 const CoursesList = () => {
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: QueryKeys.products.All,
-    queryFn: async () => await getAPi("/service-levels"),
-  });
-  const { addToCart } = useCart();
 
 
   const CoursesData = [
