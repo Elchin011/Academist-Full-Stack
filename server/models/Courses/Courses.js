@@ -15,6 +15,10 @@ const CoursesSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    courseFeatures: {
+        type: String,
+        required: true
+    },
     imageUrl: {
         type: String,
         required: true

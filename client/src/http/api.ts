@@ -55,20 +55,24 @@ export const postApi = async (url: string, data: any) => {
 
 export const postApiComment = async (url: string, data: any) => {
     let token;
-    if (typeof document !== "undefined") {
-        token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
+    if (typeof window !== "undefined") {
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        token = user?.token; // burada token user object-dən alınır
     }
+
     const response = await api.post(url, data, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
+
     return response.data;
 }
 
+
 export const deleteApiComment = async (url: string) => {
     let token;
-    if (typeof document !== "undefined") {
-        token = document.cookie.split("; ").find(row => row.startsWith("token="))?.
-            split("=")[1];
+    if (typeof window !== "undefined") {
+        const user = JSON.parse(localStorage.getItem("user") || "null");
+        token = user?.token; // burada token user object-dən alınır
     }
     const response = await api.delete(url, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}

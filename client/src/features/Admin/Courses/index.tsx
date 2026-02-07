@@ -97,17 +97,20 @@ const CoursesList = () => {
       name: editCourse ? editCourse.name : "",
       price: editCourse ? editCourse.price : 0,
       teacher: editCourse ? editCourse.teacher : "",
+      courseFeatures: editCourse ? editCourse.courseFeatures : "",
       imageUrl: editCourse ? editCourse.imageUrl : "" as string | File,
     },
     validationSchema: yup.object({
       name: yup.string().required("Name is required"),
       price: yup.number().required("Price is required").min(0, "Price must be a positive number"),
       teacher: yup.string().required("Teacher is required"),
+      courseFeatures: yup.string().required("Course features are required"),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("teacher", values.teacher);
+      formData.append("courseFeatures", values.courseFeatures);
       if (values.imageUrl && typeof values.imageUrl !== "string") {
         formData.append("file", values.imageUrl);
       }
@@ -128,7 +131,7 @@ const CoursesList = () => {
 
 
 
-  const columns = ["Id", "Name", "Price", "Teacher", "Image", "Actions"];
+  const columns = ["Id", "Name", "Price", "Teacher", "Course Features", "Image", "Actions"];
 
   const rows =
     data &&
@@ -138,6 +141,7 @@ const CoursesList = () => {
         Name: item?.name,
         Price: item?.price,
         Teacher: item?.teacher?.name ?? "-",
+        CourseFeatures: item?.courseFeatures ?? "-",
         Image: (
           <div>
             <img
@@ -233,7 +237,21 @@ const CoursesList = () => {
                   value={formik.values.name}
                   name="name"
                   type="text"
-                  placeholder="Enter the Product Name."
+                  placeholder="Enter the Course Name."
+                  onBlur={formik.handleBlur}
+                />
+              </div>
+              <div>
+                <Label className="mb-2" htmlFor="courseFeatures">
+                  {" "}
+                    Course Features
+                </Label>
+                <Input
+                  onChange={formik.handleChange}
+                  value={formik.values.courseFeatures}
+                  name="courseFeatures"
+                  type="text"
+                  placeholder="Enter the Course Features."
                   onBlur={formik.handleBlur}
                 />
               </div>

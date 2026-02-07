@@ -1,7 +1,7 @@
 "use client";
 import { Button } from '@/components/ui/button';
 import { QueryKeys } from '@/constants/QueryKeys';
-import { getAPi, postApi } from '@/http/api';
+import { getAPi, postApi, postApiComment } from '@/http/api';
 import { useCart } from '@/Providers/CartProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Heart, Minus, Plus, ShoppingBag, Trash, Trash2 } from 'lucide-react';
@@ -19,6 +19,7 @@ const ProductId = () => {
     const [rating, setRating] = useState(0);
     const [averageRating, setAverageRating] = useState(0);
     const { addToCart } = useCart();
+
 
 
 
@@ -87,64 +88,72 @@ const ProductId = () => {
             : null;
 
 
-    // 🔥 Quantity state əlavə etdik
+
 
 
     const increaseQty = () => setQuantity((prev) => prev + 1);
     const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
 
+    const token = localStorage.getItem("token");
+
     const handleAddComment = async () => {
         if (!commentInput.trim()) return;
 
         try {
-            const newComment = await postApi("/comments", {
-                product: data.data._id,
-                comment: commentInput.trim(),
-                rating,
+            const res = await fetch("http://localhost:3001/api/comments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}), 
+                },
+                body: JSON.stringify({
+                    product: data.data._id,
+                    comment: commentInput.trim(),
+                    rating: rating,
+                }),
             });
 
-            setComments(prev => [newComment, ...prev]);
+            if (!res.ok) throw new Error("Failed to add comment");
+            const result = await res.json();
+            setComments((prev) => [result, ...prev]);
             setCommentInput("");
             setRating(0);
             toast.success("Rəy əlavə olundu");
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            console.error(err);
             toast.error("Rəy əlavə olunmadı");
         }
     };
 
-    const handleDeleteComment = async (commentId: string) => {
-        try {
-            let token;
-            if (typeof document !== "undefined") {
-                token = document.cookie
-                    .split("; ")
-                    .find((row) => row.startsWith("token="))
-                    ?.split("=")[1];
-            }
-
-            await fetch(`http://localhost:3001/api/comments/${commentId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-                },
-            });
-
-            setComments((prev) => prev.filter((c) => c._id !== commentId));
-            toast.success("Rəy silindi");
-        } catch (err) {
-            console.error(err);
-            toast.error("Rəy silinmədi");
-        }
-    };
 
 
+   const handleDeleteComment = async (commentId: string) => {
+  try {
+    // Token-i localStorage-dan oxuyuruq
+    const userToken = localStorage.getItem("token");
+    if (!userToken) {
+      toast.error("Please login to delete comments");
+      return;
+    }
 
+    const res = await fetch(`http://localhost:3001/api/comments/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`, // token-i header-ə əlavə edirik
+      },
+    });
 
+    if (!res.ok) throw new Error("Failed to delete comment");
 
-
+    setComments((prev) => prev.filter((c) => c._id !== commentId));
+    toast.success("Rəy silindi");
+  } catch (err) {
+    console.error(err);
+    toast.error("Rəy silinmədi");
+  }
+};
 
 
 

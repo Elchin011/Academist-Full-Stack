@@ -20,7 +20,7 @@ const createCourses = async (req, res) => {
     });
   }
 
-  const { name, price , teacher} = req.body;
+  const { name, price , teacher, courseFeatures} = req.body;
   const exsistingCourse = await CoursesSchema.findOne({ name: name });
   if (exsistingCourse) {
     return res.status(400).json({
@@ -31,6 +31,7 @@ const createCourses = async (req, res) => {
     name: name,
     imageUrl: req.file.path,
     price: price,
+    courseFeatures: courseFeatures,
     teacher: teacher
   });
   await newCourse.save();
@@ -56,7 +57,7 @@ const deleteCourses = async (req, res) => {
 
 const updateCourses = async (req, res) => {
   const { id } = req.params;
-  const { name, price , teacher} = req.body;
+  const { name, price , teacher, courseFeatures } = req.body;
 
   const course = await CoursesSchema.findByIdAndUpdate(
     id,
@@ -65,6 +66,7 @@ const updateCourses = async (req, res) => {
       price: price,
       teacher: teacher,
       imageUrl: req.file ? req.file.path : undefined,
+      courseFeatures: courseFeatures
     },
     { new: true }
   );

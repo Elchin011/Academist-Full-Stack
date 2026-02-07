@@ -6,10 +6,12 @@ const { createComment, getCommentsByProduct ,deleteComment, getProductRating } =
 
 const router = express.Router();
 
+router.get("/rating/:productId", getProductRating);
+router.get("/:productId", getCommentsByProduct);
 
 router.post("/", authProtectMiddleware, createComment);
 router.delete("/:id", authProtectMiddleware, deleteComment);
-router.get("/:productId", getCommentsByProduct);
-router.get("/rating/:productId", getProductRating);
+
+
 
 module.exports = router;
