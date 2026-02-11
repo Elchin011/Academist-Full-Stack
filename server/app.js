@@ -12,6 +12,8 @@ const CuponRouter = require("./routers/CuponRouter");
 const CommentRouter = require("./routers/CommentRouter");
 const CoursesRouter = require("./routers/CoursesRouter");
 const AdminRouter = require("./routers/AdminRouter");
+const OrdersRouter = require("./routers/OrdersRouter");
+const EnrollRouter = require("./routers/EnrollRouter");
 
 const { createAdmin } = require("./controllers/AdminController");
 
@@ -44,7 +46,9 @@ app.use("/api/questions", QuestionsRouter);
 app.use("/api/appointments", AppointmentRouter);
 app.use("/api/coupons", CuponRouter);
 app.use("/api/comments", CommentRouter);
-app.use("/api/admin", AdminRouter); 
+app.use("/api/admin", AdminRouter);
+app.use("/api/orders", OrdersRouter);
+app.use("/api/enrollments", EnrollRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -6,43 +6,16 @@ import { getAPi } from "@/http/api";
 import { useCart } from "@/Providers/CartProvider";
 import { ProductCard } from '../../common/ProductCard';
 import toast from 'react-hot-toast';
-import { PricingCard } from '@/features/PricingPlans/common/PricingCard';
+import { CourseCard } from '@/features/CoursesList/common/CourseCard';
 
 const CoursesList = () => {
 
 
 
-  const CoursesData = [
-    {
-      "_id": "648f1e2f4f1c2c001c8e4b1a",
-      "name": "Basic Plan",
-      "price": 19,
-      "teacherName": "John Doe",
-      "category": "Certificate",
-      "imageUrl": "https://academist.qodeinteractive.com/wp-content/uploads/2018/07/courses-12.jpg"
-    },
-    {
-      "_id": "648f1e3a4f1c2c001c8e4b1c",
-      "name": "Standard Plan",
-      "price": 49,
-      "teacherName": "Sarah Lee",
-      "category": "Standard",
-      "imageUrl": "https://academist.qodeinteractive.com/wp-content/uploads/2018/07/courses-11.jpg"
-    },
-    {
-      "_id": "648f1e444f1c2c001c8e4b1e",
-      "name": "Premium Plan",
-      "price": 99,
-      "teacherName": "Mary Smith",
-      "category": "Populyar",
-      "imageUrl": "https://academist.qodeinteractive.com/wp-content/uploads/2018/07/courses-10.jpg"
-    }
-  ]
-
-  const user =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("user") || "null")
-      : null;
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: QueryKeys.courses.All,
+    queryFn: async () => await getAPi("/courses"),
+  });
 
   return (
     <div className='container mx-auto pt-40'>
@@ -54,16 +27,18 @@ const CoursesList = () => {
       </div>
       <div className='container mx-auto pt-10 pb-25 px-7.5 md:px-3 lg:px-0'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12.5'>
-          {CoursesData && CoursesData?.map((item: any) => (
-            <PricingCard
-              key={item?._id}
-              img={item?.imageUrl}
-              name={item?.name}
-              price={item?.price}
-              teacherName={item?.teacherName}
-              category={item?.category}
-            />
-          ))}
+          {data &&
+            data?.data?.map((item: any) => (
+              <CourseCard
+                key={item?._id}
+                img={item?.imageUrl}
+                name={item?.name}
+                price={item?.price}
+                teacherName={item?.teacher?.name}
+                courseFeatures={item?.courseFeatures}
+                id={item?._id}
+              />
+            ))}
         </div>
       </div>
     </div >

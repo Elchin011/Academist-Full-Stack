@@ -5,28 +5,36 @@ import cloudinaryLoader from "@/features/common/BaseImageLoad";
 import { Check, DollarSign, Star, User } from "lucide-react";
 import Image from "next/image";
 import { loadStripe } from "@stripe/stripe-js";
+import Link from "next/link";
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
-export const PricingCard = ({
+export const CourseCard = ({
     img,
     name,
     price,
     teacherName,
-    category
+    courseFeatures,
+    id
 }: {
     img: string;
     name: string;
     price: number;
     teacherName: string;
-    category: string;
+    courseFeatures: string;
+    id: any;
 }) => {
 
 
     return (
         <Card>
-            <CardContent className="space-y-2">
+            <CardContent 
+            className="space-y-2"
+            onClick={() => {
+                window.location.href = `/courses-list/${id}`;
+            }}
+            >
                 <div className="w-full h-69 overflow-hidden relative">
                     <Image
                         loader={cloudinaryLoader}
@@ -37,13 +45,15 @@ export const PricingCard = ({
                     />
                     <div className="absolute bottom-8 right-0">
                         <Button variant="default" className="py-2 px-7 text-[14px] text-white font-medium bg-[#ff1949] hover:bg-[#1c1c1c] transition-colors duration-300">
-                            {category}
+                            {courseFeatures}
                         </Button>
                     </div>
                 </div>
                 <div className=''>
                     <div className="mb-5">
-                        <h4 className='text-[20px] font-bold'>{name}</h4>
+                        <h4 className='text-[20px] font-bold'>
+                            {name}
+                        </h4>
                         <h4 className='text-[15px] font-light'>{teacherName}</h4>
                     </div>
                     <span className="h-[3px] bg-[#ff1949] block w-10"></span>

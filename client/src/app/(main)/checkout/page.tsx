@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function CheckoutPage() {
   const { getCartItems, getTotalPrice, clearCart } = useCart();
+  const [mounted, setMounted] = useState(false);
   const [address, setAddress] = useState("");
   const [lastname, setLastname] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -33,15 +34,18 @@ export default function CheckoutPage() {
       return;
     }
 
+    const orderItems = cartItems.map((item: any) => ({
+      type: item.isCourse ? "Course" : "Product", // əgər hər cart item-də isCourse flag varsa
+      item: item._id, // Product / Course _id-si
+      quantity: item.quantity || 1
+    }));
+
     try {
       const orderData = {
         user: user._id,
-        products: cartItems.map((item: any) => ({
-          product: item.id,
-          quantity: item.quantity,
-        })),
+        items: orderItems,
         totalAmount,
-        couponCode: couponCode || null, 
+        couponCode: couponCode || null,
         address,
         firstName,
         lastname,
@@ -50,7 +54,8 @@ export default function CheckoutPage() {
       };
 
       mutate(orderData, {
-        onSuccess: () => {
+        onSuccess: (data: any) => {
+          console.log("Order created successfully", data);
           clearCart();
           setSuccess(true);
         },
@@ -95,7 +100,7 @@ export default function CheckoutPage() {
     isError,
     error: OrderCreateErr,
   } = useMutation({
-    mutationFn: async (data: any) => postApi("/create/order", data),
+    mutationFn: async (data: any) => postApi("/orders/create", data),
     mutationKey: ["createOrder"],
   });
 
@@ -141,6 +146,16 @@ export default function CheckoutPage() {
   //     console.error("Stripe checkout error:", result.error.message);
   //   }
   // };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 2️⃣ BÜTÜN hook-lar bitəndən SONRA guard
+  if (!mounted) {
+    return null; // hydration fix
+  }
+
 
   return (
     <div className="container mx-auto px-4 mt-25 py-8">
@@ -221,7 +236,7 @@ export default function CheckoutPage() {
               <ul className="mb-2">
                 {cartItems.map((item: any) => (
                   <li
-                    key={item.id}
+                    key={`${item.type}-${item.id}`}
                     className="flex justify-between border-b py-9"
                   >
                     <span className="text-[#565656]">

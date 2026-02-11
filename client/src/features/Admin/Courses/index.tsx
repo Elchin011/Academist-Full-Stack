@@ -141,7 +141,7 @@ const CoursesList = () => {
         Name: item?.name,
         Price: item?.price,
         Teacher: item?.teacher?.name ?? "-",
-        CourseFeatures: item?.courseFeatures ?? "-",
+        "Course Features": item?.courseFeatures ?? "-",
         Image: (
           <div>
             <img

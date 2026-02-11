@@ -55,7 +55,12 @@ const items = [
         url: "/admin/courses",
         icon: ListTree,
     },
-    
+    {
+        title: "Course Enrollments",
+        url: "/admin/course-enrollments",
+        icon: ListTree,
+    }
+
 ]
 
 export function AppSidebar() {

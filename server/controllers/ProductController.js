@@ -2,10 +2,9 @@ const ProductSchema = require("../models/Product/ProductSchema");
 const ProductColorSchema = require("../models/Product/ProductColorSchema");
 const ProductSizesSchema = require("../models/Product/ProductSizesSchema");
 const ProductCategoriesSchema = require("../models/Product/ProductCategorySchema");
-const UserSchema = require("../models/User/UserSchema");
-const OrderSchema = require("../models/Order/OrderSchema");
-const ProductCategorySchema = require("../models/Product/ProductCategorySchema");
-const Coupon = require("../models/Cupon/CouponSchema");
+
+
+
 
 const getAllProducts = async (req, res) => {
   try {
@@ -432,196 +431,11 @@ const getProductById = async (req, res) => {
   }
 };
 
-const createOrder = async (req, res) => {
-  try {
-    const {
-      user,
-      products,
-      totalAmount,
-      couponCode, // frontend-dən gəlir
-      status = "pending",
-      address,
-      firstName,
-      lastname,
-      email,
-      phone,
-    } = req.body;
-
-    if (
-      !user ||
-      !products ||
-      !Array.isArray(products) ||
-      products.length === 0
-    ) {
-      return res
-        .status(400)
-        .json({ message: "User and products are required" });
-    }
-
-    if (!totalAmount || isNaN(Number(totalAmount))) {
-      return res
-        .status(400)
-        .json({ message: "Total amount is required and must be a number" });
-    }
-
-    // Kupon yoxlaması
-    let discount = 0;
-    let finalPrice = Number(totalAmount);
-
-    let appliedCoupon = couponCode;
-    try {
-      appliedCoupon = JSON.parse(couponCode);
-    } catch (e) {
-      appliedCoupon = couponCode;
-    }
-
-    if (appliedCoupon) {
-      const coupon = await Coupon.findOne({
-        code: { $regex: `^${appliedCoupon.trim()}$`, $options: "i" },
-        isActive: true,
-      });
-      
-      if (coupon) {
-        if (coupon.discountType === "percentage") {
-          discount = (totalAmount * coupon.discountValue) / 100;
-        } else {
-          discount = coupon.discountValue;
-        }
-        finalPrice = totalAmount - discount;
-      }
-    }
-
-    // User yoxla
-    const foundUser = await UserSchema.findById(user);
-    if (!foundUser) return res.status(404).json({ message: "User not found" });
-
-    // Products yoxla
-    const productIds = products.map((p) => p.product);
-    const foundProducts = await ProductSchema.find({
-      _id: { $in: productIds },
-    });
-    if (!foundProducts || foundProducts.length !== productIds.length) {
-      return res
-        .status(404)
-        .json({ message: "One or more products not found" });
-    }
-
-    // Order yarat
-    const newOrder = new OrderSchema({
-      user,
-      products,
-      totalAmount: Number(totalAmount),
-      discount: Number(discount.toFixed(2)),
-      finalPrice: Number(finalPrice.toFixed(2)),
-      status,
-      address,
-      firstName,
-      lastname,
-      email,
-      phone,
-    });
-
-    await newOrder.save();
-
-    return res.status(201).json({
-      message: "Order created successfully",
-      data: newOrder,
-    });
-  } catch (err) {
-    console.error("CreateOrder error:", err);
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
 
 
-
-const deleteOrder = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const order = await OrderSchema.findByIdAndDelete(id);
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-    return res.status(200).json({ message: "Order deleted successfully" });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
-
-const getAllOrders = async (req, res) => {
-  const userId = req.query.user;
-  if (!userId) {
-    return res.status(400).json({ message: "User ID is required" });
-  }
-  try {
-    const orders = await OrderSchema.find({ user: userId })
-      .populate("user")
-      .populate("products.product");
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: "No orders found for this user" });
-    }
-    return res.status(200).json({
-      data: orders,
-      message: "User's orders fetched successfully",
-    });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
-
-const getAllOrdersInDashboard = async (req, res) => {
-  try {
-    const orders = await OrderSchema.find()
-      .populate("user")
-      .populate("products.product");
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: "No orders found" });
-    }
-    return res.status(200).json({
-      data: orders,
-      message: "All orders fetched successfully",
-    });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
-
-const updateOrderStatus = async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  if (!status) {
-    return res.status(400).json({ message: "Status is required" });
-  }
-  try {
-    const order = await OrderSchema.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-    return res
-      .status(200)
-      .json({ message: "Order status updated", data: order });
-  } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Server error", error: err.message });
-  }
-};
 
 module.exports = {
   getAllProducts,
-  createOrder,
   getAllColors,
   getAllSizes,
   getAllCategories,
@@ -630,13 +444,9 @@ module.exports = {
   createProductCategory,
   deleteProductCategory,
   createProduct,
-  getAllOrders,
-  getAllOrdersInDashboard,
-  updateOrderStatus,
   deleteProduct,
   deleteProductSize,
   deleteProductColor,
   getProductById,
-  deleteOrder,
   updateProduct,
 };

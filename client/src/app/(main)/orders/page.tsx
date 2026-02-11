@@ -96,7 +96,7 @@ const page = () => {
                   <li>
                     <strong>Product:</strong>
                   </li>
-                  {order.products.map((item: any, index: number) => (
+                  {order?.items?.map((item: any, index: number) => (
                     <li
                       key={
                         item.product?._id ||

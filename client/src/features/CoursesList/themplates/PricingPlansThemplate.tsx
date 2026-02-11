@@ -1,5 +1,5 @@
 import React from 'react'
-import ServicesPricing from '../components/ServicesPricing'
+import ServicesPricing from '../components/Courses'
 import HeroBannerPricingPlans from '../components/HeroBanner'
 import PricingLogo from '../components/PricingLogo'
 

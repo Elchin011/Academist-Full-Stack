@@ -7,17 +7,21 @@ const OrderSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    products: [
+    items: [
       {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+        type: {
+          type: String,
+          enum: ["Course", "Product"],
           required: true,
         },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          refPath: "items.type",
+          },
         quantity: {
           type: Number,
-          required: true,
-          min: 1,
+          default: 1,
         },
       },
     ],

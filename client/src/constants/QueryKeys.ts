@@ -33,8 +33,9 @@ export const QueryKeys = {
         createCourse: ["create-course"],
         coursesTeacher: ["courses-teacher"],
         createCoursesTeacher: ["create-courses-teacher"],
+        coursesEnrollments: ["courses-enrollments"],
     },
-    blogs:{
+    blogs: {
         All: ["All_blog"],
         createBlog: ["create-blog"]
     },
@@ -45,5 +46,5 @@ export const QueryKeys = {
     coupons: {
         All: ["All_coupons"],
         createCoupon: ["create-coupon"]
-    }
+    },
 };

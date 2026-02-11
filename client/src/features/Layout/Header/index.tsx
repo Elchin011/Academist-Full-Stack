@@ -262,7 +262,7 @@ export const Header = () => {
                 </li>
                 <li className="relative group mx-3">
                   <Link
-                    href="/"
+                    href="/courses-list"
                     className="text-[#1c1c1c] text-[17px] font-semibold  cursor-pointer"
                   >
                     Courses Lists

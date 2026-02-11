@@ -42,11 +42,7 @@ router.delete("/products/categories/:id", deleteProductCategory);
 router.get("/products/categories", getAllCategories);
 router.delete("/products/:id", deleteProduct);
 router.get("/products/:id", getProductById);
-router.post("/create/order", createOrder);
-router.get("/orders", getAllOrders);
-router.get("/admin/orders", getAllOrdersInDashboard);
-router.patch("/orders/:id/status", updateOrderStatus);
-router.delete("/orders/:id", deleteOrder);
+
 
 
 

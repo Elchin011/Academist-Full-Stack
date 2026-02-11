@@ -25,25 +25,17 @@ const OrderList = () => {
   const [orderstatus, setStatus] = useState<string>("");
   const [selectOrderId, setSelectOrderId] = useState<string>("");
   const [formStatus, setFormStatus] = useState<string>("");
-  const {
-    data,
-    isLoading,
-    isError: dataIsErr,
-    error: dataErr,
-    refetch,
-  } = useQuery({
+
+
+
+  const { data, isLoading, isError: dataIsErr, error: dataErr, refetch } = useQuery({
     queryKey: QueryKeys.orders.all,
     queryFn: async () => {
-      return getAPi("/admin/orders");
+      return getAPi("orders/admin/orders");
     },
   });
 
-  const { isLoading: isLoadingOrders, refetch: refetchOrders } = useQuery({
-    queryKey: QueryKeys.orders.all,
-    queryFn: async () => {
-      return getAPi("/admin/orders");
-    },
-  });
+
 
   const {
     mutate: deleteOrder,
@@ -70,7 +62,6 @@ const OrderList = () => {
   ];
 
   const rows =
-    data &&
     data?.data?.map((item: any) => {
       return {
         id: item?._id,
@@ -90,18 +81,30 @@ const OrderList = () => {
         ),
         address: item?.address,
         totalAmount: item?.totalAmount,
-        products: item?.products
-          .map(
-            (product: any) => `${product.product.name} (${product.quantity})`
-          )
+        products: (item?.items ?? [])
+          .map((i: any) => {
+            if (!i.item) return null;
+            // Product varsa name, course varsa title
+            const itemName =
+              i.type === "Course"
+                ? i.item.name
+                : i.item.name;
+            return `${itemName} (${i.quantity})`;
+          })
+          .filter(Boolean)
           .join(", "),
+
+
+
         actions: (
           <div className="flex items-center gap-1.5">
-            <Button variant="outline"
+            <Button
+              variant="outline"
               className="bg-blue-500 text-white p-1.5 px-2.5 rounded-md hover:bg-blue-600 hover:text-white duration-300"
               onClick={() => {
                 setIsOpenModalIsEditStatus(true);
                 setStatus(item?.status);
+                setFormStatus("");
                 setSelectOrderId(item?._id);
               }}
             >
@@ -121,6 +124,7 @@ const OrderList = () => {
         ),
       };
     });
+
 
   const status = [
     {
@@ -145,7 +149,6 @@ const OrderList = () => {
     },
   ];
 
-  const disabledSelect = status.find((item: any) => item.value === orderstatus);
   const { isPending, mutate, isError, error } = useMutation({
     mutationFn: async (data: any) => {
       return patchOrderApi(`/orders/${selectOrderId}/status`, data);
@@ -183,7 +186,8 @@ const OrderList = () => {
           onClose={() => {
             setIsOpenModalIsEditStatus(false);
             setStatus("");
-            selectOrderId && setSelectOrderId("");
+            setFormStatus("");
+            setSelectOrderId("");
           }}
         >
           <form
@@ -199,7 +203,7 @@ const OrderList = () => {
               onValueChange={(value: string) => {
                 setFormStatus(value);
               }}
-            //   disabled={disabledSelect ? true : false}
+              disabled={orderstatus === "delivered"}
             >
               <SelectTrigger className="w-[520px]">
                 <SelectValue placeholder="Select a fruit" />

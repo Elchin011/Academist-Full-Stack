@@ -5,7 +5,8 @@ const { storage } = require("../lib/cloudinaryConfig");
 const {
   authProtectMiddleware,
 } = require("../middleware/authProtectMiddleware");
-const { getAllCourses, createCourses, updateCourses, deleteCourses, createCoursesTeachers, deleteCoursesTeachers, getAllCoursesTeachers, updateCoursesTeachers } = require("../controllers/CoursesController");
+const { getAllCourses, createCourses, updateCourses, deleteCourses, createCoursesTeachers, deleteCoursesTeachers, getAllCoursesTeachers, updateCoursesTeachers, getCourseById } = require("../controllers/CoursesController");
+
 
 const upload = multer({ storage: storage });
 const router = express.Router();
@@ -19,6 +20,8 @@ router.delete("/:id", deleteCourses);
 router.post("/create/courses-teacher", upload.single("file"), createCoursesTeachers);
 router.delete("/courses-teacher/:id", deleteCoursesTeachers);
 router.get("/courses-teacher", getAllCoursesTeachers);
+router.get("/:id", getCourseById);
 router.patch("/courses-teacher/:id", upload.single("file"), updateCoursesTeachers);
+
 
 module.exports = router;

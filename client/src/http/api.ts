@@ -53,26 +53,44 @@ export const postApi = async (url: string, data: any) => {
 }
 
 
+export const postApiCourse = async (
+    url: string,
+    data: any,
+    token?: string
+) => {
+    try {
+        const response = await api.post(
+            url,
+            data,
+            {
+                headers: token
+                    ? { Authorization: `Bearer ${token}` }
+                    : {},
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error posting data:", error);
+        throw error;
+    }
+};
+
 export const postApiComment = async (url: string, data: any) => {
     let token;
-    if (typeof window !== "undefined") {
-        const user = JSON.parse(localStorage.getItem("user") || "null");
-        token = user?.token; // burada token user object-dən alınır
+    if (typeof document !== "undefined") {
+        token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
     }
-
     const response = await api.post(url, data, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
     });
-
     return response.data;
 }
 
-
 export const deleteApiComment = async (url: string) => {
     let token;
-    if (typeof window !== "undefined") {
-        const user = JSON.parse(localStorage.getItem("user") || "null");
-        token = user?.token; // burada token user object-dən alınır
+    if (typeof document !== "undefined") {
+        token = document.cookie.split("; ").find(row => row.startsWith("token="))?.
+            split("=")[1];
     }
     const response = await api.delete(url, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}

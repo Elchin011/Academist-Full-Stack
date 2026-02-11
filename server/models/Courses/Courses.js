@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const CoursesSchema = mongoose.Schema({
+const CourseSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -24,4 +24,4 @@ const CoursesSchema = mongoose.Schema({
         required: true
     },
 })
-module.exports = mongoose.model("Courses", CoursesSchema)
+module.exports = mongoose.models.Course || mongoose.model("Course", CourseSchema);
