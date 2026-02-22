@@ -38,6 +38,7 @@ const CoursesId = () => {
 
     const handleEnroll = async () => {
         const token = localStorage.getItem("token");
+    
         if (!token) {
             toast.error("Please login to enroll");
             return;

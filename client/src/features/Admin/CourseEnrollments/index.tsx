@@ -15,8 +15,7 @@ interface Enrollment {
     };
     user: {
         _id: string;
-        firstName: string;
-        lastName: string;
+        name: string;
         email: string;
     };
 }
@@ -32,6 +31,7 @@ const CourseEnrollmentsList = () => {
         queryFn: async () => getAPi("/enrollments/admin/enrollments"),
     });
 
+    
     // Transform enrollments into course-based grouping
     const courseMap: Record<string, Enrollment["user"][]> = {};
     data?.data?.forEach((enrollment: Enrollment) => {
@@ -43,8 +43,8 @@ const CourseEnrollmentsList = () => {
     const columns = ["Course Name", "Enrolled Count", "Enrolled Users"];
 
     const rows = Object.entries(courseMap).map(([courseName, users]) => ({
-        courseName,
-        enrolledCount: (
+        "Course Name": courseName,
+        "Enrolled Count": (
             <Button
                 onClick={() => {
                     setSelectedUsers(users);
@@ -56,10 +56,10 @@ const CourseEnrollmentsList = () => {
                 {users.length}
             </Button>
         ),
-        enrolledUsers:
+        "Enrolled Users":
             users
                 .slice(0, 3)
-                .map((u) => `${u.firstName} ${u.lastName}`)
+                .map((u) => u.name)
                 .join(", ") + (users.length > 3 ? ", ..." : ""),
     }));
 
@@ -90,7 +90,7 @@ const CourseEnrollmentsList = () => {
                         <ul className="list-disc pl-5 space-y-1 max-h-[300px] overflow-y-auto">
                             {selectedUsers.map((user) => (
                                 <li key={user._id}>
-                                    {user.firstName} {user.lastName} ({user.email})
+                                    {user.name} ({user.email})
                                 </li>
                             ))}
                         </ul>
