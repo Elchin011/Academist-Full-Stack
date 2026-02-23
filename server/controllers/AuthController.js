@@ -121,4 +121,30 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { AuthRegister, AuthLogin, changePassword };
+const updateProfile = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const userId = req.user.id;
+
+    const user = await UserSchema.findByIdAndUpdate(
+      userId,
+      { name, email },
+      { new: true }
+    );
+
+    return res.json({
+      message: "Profil yeniləndi",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { AuthRegister, AuthLogin, changePassword, updateProfile };
