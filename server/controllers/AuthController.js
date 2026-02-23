@@ -13,7 +13,9 @@ const AuthRegister = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (email === "admin@gmail.com") {
-      return res.status(403).json({ message: "Admin account is pre-defined. Cannot register." });
+      return res
+        .status(403)
+        .json({ message: "Admin account is pre-defined. Cannot register." });
     }
 
     const existUser = await UserSchema.findOne({ email });
@@ -67,7 +69,9 @@ const AuthLogin = async (req, res) => {
       role: user.role || "user",
     };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     return res
       .cookie("token", token, {
@@ -91,4 +95,30 @@ const AuthLogin = async (req, res) => {
   }
 };
 
-module.exports = { AuthRegister, AuthLogin };
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    const user = await UserSchema.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User tapılmadı" });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Cari şifrə yanlışdır" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    return res.json({ message: "Şifrə uğurla dəyişdirildi" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { AuthRegister, AuthLogin, changePassword };

@@ -6,7 +6,7 @@ import { OrderStatus } from "@/lib/check-status"; // status rəng funksiyası
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   const user =
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("user") || "null")
@@ -96,4 +96,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -52,10 +52,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             <div className="px-4 py-1 font-semibold text-[16px] text-black">{displayUser.name}</div>
             <div className="py-2 border-b border-t border-gray-200">
               <p className="text-[12px] uppercase font-semibold px-4 text-gray-700">
-                <Link href="/orders">Orders</Link>
-              </p>
-              <p className="text-[12px] uppercase font-semibold px-4 text-gray-700">
-                <Link href="/appointment">Appointments</Link>
+                <Link href="/my-courses">User Dashboard</Link>
               </p>
             </div>
 
