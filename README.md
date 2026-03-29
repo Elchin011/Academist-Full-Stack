@@ -1,7 +1,9 @@
-Academist Course Platform — Full-Stack Web Application
+# Academist Course Platform — Full-Stack Web Application
+
 Next.js · Node.js · Express.js · MongoDB · Mongoose
-Private GitHub repository
-(available upon request)
+
+## Features
+
 - JWT-based user authentication (Login / Register)
 - Role-based authorization for Admin and User roles
 - Course purchase system with cart and checkout flow
